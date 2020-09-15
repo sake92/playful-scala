@@ -1,0 +1,8 @@
+# TODO DELETEEEEEEEEE
+
+# Home page
+#GET        /                             com.github.jalvarez.playscalajs.controllers.Application.index
+
+# Prefix must match `play.assets.urlPrefix`
+#GET        /assets/*file                 controllers.Assets.at(file)
+#GET        /versionedAssets/*file        controllers.Assets.versioned(path="/public", file: Asset)
