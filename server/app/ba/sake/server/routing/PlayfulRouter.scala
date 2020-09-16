@@ -1,30 +1,24 @@
 package ba.sake.server.routing
 
 import play.api.mvc.Handler
+import play.api.mvc.RequestHeader
 import play.api.routing.Router
 import play.api.routing.SimpleRouter
-import play.api.mvc.RequestHeader
 
+// TODO maybe extract in a library..
 object PlayfulRouter {
-  type Routes = PartialFunction[(String, String), Handler]
 
-  def from(routes: Routes): Router.Routes = rh => routes((rh.method, rh.uri))
+  type Routes = PartialFunction[(String, String), Handler]
 }
 
 trait PlayfulRouter extends SimpleRouter {
 
   def playfulRoutes: PlayfulRouter.Routes
 
-  // avoid using SIRD macros
-  override def routes: Router.Routes = {
-
-    val f = (rh: RequestHeader) => {
-      val methAndUri = (rh.method, rh.uri)
-      if (playfulRoutes.isDefinedAt(methAndUri)) Some(playfulRoutes(methAndUri))
-      else None
+  // adapt to match only on (method, URI)
+  override def routes: Router.Routes =
+    playfulRoutes.compose {
+      case rh: RequestHeader => (rh.method, rh.uri)
     }
-
-    f.unlift
-  }
 
 }

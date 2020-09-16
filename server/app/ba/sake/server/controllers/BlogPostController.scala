@@ -10,7 +10,7 @@ class BlogPostController(val Action: DefaultActionBuilder) extends PlayfulRouter
   override val playfulRoutes = {
     case ("GET", BlogPostByIdRoute(blogPostId)) =>
       Action {
-        Ok(s"GET BlogPost by id=$blogPostId")
+        Ok(s"GET BlogPost by id = $blogPostId")
       }
   }
 }

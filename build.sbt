@@ -10,6 +10,7 @@ lazy val server = (project in file("server"))
   .settings(
     libraryDependencies ++= Seq(
       guice,
+      "ba.sake" %% "hepek-play" % "0.8.0",
       "org.scalatest" %% "scalatest" % "3.2.0" % "test"
     )
   )
@@ -28,10 +29,12 @@ lazy val client = (project in file("client"))
   .enablePlugins(ScalaJSPlugin)
   .dependsOn(shared.js)
 
-// TODO @Route-izirat :)
 lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Pure)
   .in(file("shared"))
   .settings(
-    libraryDependencies += "ba.sake" %%% "stone-macros" % "0.2.1"
+    libraryDependencies ++= Seq(
+      "com.typesafe.play" %%% "play-json" % "2.9.0",
+      "ba.sake" %%% "stone-macros" % "0.2.1"
+    )
   )
