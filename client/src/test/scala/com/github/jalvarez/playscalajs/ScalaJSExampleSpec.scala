@@ -1,4 +1,4 @@
-package com.github.jalvarez.playscalajs
+package ba.sake.client
 
 import org.scalajs.dom
 import org.scalatest.flatspec.AnyFlatSpec
