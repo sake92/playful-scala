@@ -17,7 +17,7 @@ class MainController(val Action: DefaultActionBuilder, val assets: Assets) exten
 
     case ("GET", _) =>
       Action {
-        Ok(IndexPage)
+        Ok(IndexPage(assets))
       }
   }
 

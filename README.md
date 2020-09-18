@@ -1,6 +1,17 @@
 # Playful Scala
 
-Full-stack Scala with Play, ScalaJS, Hepek templates, Stone routes.
+Simplistic full-stack Scala.  
+
+Server side:
+- Play Framework
+
+Client side:
+- ScalaJS
+- ReScala
+
+Shared:
+- Stone routes
+- Hepek templates
 
 ## Run app
 
@@ -16,10 +27,3 @@ For testing ScalaJS code you need to install `jsdom`:
 npm install jsdom
 ```
 
-
-
-
-
-### sbt-web
-If you need sass, gzip, uglify or other sbt-web stuff, you can use this plugin:
-https://github.com/vmunier/sbt-web-scalajs
