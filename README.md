@@ -2,16 +2,11 @@
 
 Simplistic full-stack Scala.  
 
-Server side:
-- Play Framework
+**Server side**: Play Framework, Hepek templates
 
-Client side:
-- ScalaJS
-- ReScala
+**Client side**: ReScala, Hepek templates
 
-Shared:
-- Stone routes
-- Hepek templates
+**Shared**: Stone routes, models
 
 ## Run app
 
