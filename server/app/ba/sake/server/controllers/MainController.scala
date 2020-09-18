@@ -2,13 +2,14 @@ package ba.sake.server.controllers
 
 import play.api.mvc.Results._
 import play.api.mvc.DefaultActionBuilder
+import play.api.Mode
 import controllers.Assets
 import ba.sake.hepek.play.implicits._
 import ba.sake.shared.api.routes.AssetRoute
 import ba.sake.server.routing.PlayfulRouter
 import ba.sake.server.views.IndexPage
 
-class MainController(val Action: DefaultActionBuilder, val assets: Assets) extends PlayfulRouter {
+class MainController(val Action: DefaultActionBuilder, val assets: Assets, mode: Mode) extends PlayfulRouter {
 
   override val playfulRoutes = {
 
@@ -17,7 +18,7 @@ class MainController(val Action: DefaultActionBuilder, val assets: Assets) exten
 
     case ("GET", _) =>
       Action {
-        Ok(IndexPage(assets))
+        Ok(IndexPage(mode))
       }
   }
 

@@ -11,8 +11,7 @@ Simplistic full-stack Scala.
 ## Run app
 
 1. start sbt with `sbt`
-1. compile ScalaJS code with `client/fastOptJS`
-1. run server with `server/run`
+1. run server with `server/run` (ScalaJS will be compiled automatically)
 1. open http://localhost:9000 and enjoy! :)
 
 

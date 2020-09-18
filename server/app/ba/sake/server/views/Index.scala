@@ -1,14 +1,14 @@
 package ba.sake.server.views
 
-import controllers.Assets
+import play.api.Mode
 import scalatags.Text.all._
-import ba.sake.server.views.utils.Imports.Bundle._
+import utils.Imports.Bundle._
 
-case class IndexPage(val assets: Assets) extends HtmlPage {
+case class IndexPage(mode: Mode) extends HtmlPage {
 
   val customGrid = Grid.withScreenRatios(
     Grid.screenRatios.withAll(
-      Grid.screenRatios.lg.withSingle(1, 3, 1)
+      Ratios().withSingle(1, 3, 1)
     )
   )
   import customGrid._
@@ -28,15 +28,19 @@ case class IndexPage(val assets: Assets) extends HtmlPage {
         left = List(hyperlink("/")("Home"))
       ),
       row(
-        """
+        s"""
           ## Opa
           Selam, merhaba! :)
+
+          Running in **$mode mode**!
         """.md
       )
     )
 
-  override def scriptURLs =
-    super.scriptURLs.appended("/assets/client-fastopt.js")
+  override def scriptURLs = {
+    val scalaJsFile = if (mode == Mode.Dev) "fastopt" else "opt"
+    super.scriptURLs.appended(s"/assets/client-$scalaJsFile.js")
+  }
 
   override def styleURLs =
     super.styleURLs.appended("/assets/stylesheets/main.css")

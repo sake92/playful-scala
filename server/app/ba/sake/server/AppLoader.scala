@@ -24,7 +24,7 @@ class AppComponents(context: Context)
     val controllers = List(
       new UserController(Action),
       new BlogPostController(Action),
-      new MainController(Action, assets)
+      new MainController(Action, assets, context.environment.mode)
     )
     val routes = controllers
       .map(_.routes)
