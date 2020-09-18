@@ -5,8 +5,10 @@ import play.api.ApplicationLoader.Context
 import play.api.BuiltInComponentsFromContext
 import play.api.NoHttpFiltersComponents
 import play.api.routing.Router
-import ba.sake.server.controllers._
+import play.api.mvc.RequestHeader
+import play.api.mvc.Handler
 import _root_.controllers.AssetsComponents
+import ba.sake.server.controllers._
 
 class AppLoader extends ApplicationLoader {
 
@@ -18,12 +20,15 @@ class AppComponents(context: Context)
     with AssetsComponents
     with NoHttpFiltersComponents {
 
-      // TODO handle Assets...
   override val router = {
-    val userController = new UserController(Action)
-    val blogPostController = new BlogPostController(Action)
-    val indexController = new IndexController(Action, assets)
-    val routes = userController.routes orElse blogPostController.routes orElse indexController.routes
+    val controllers = List(
+      new UserController(Action),
+      new BlogPostController(Action),
+      new MainController(Action, assets)
+    )
+    val routes = controllers
+      .map(_.routes)
+      .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
     Router.from(routes)
   }
 

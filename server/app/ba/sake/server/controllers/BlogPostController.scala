@@ -3,7 +3,7 @@ package ba.sake.server.controllers
 import play.api.mvc.Results._
 import play.api.mvc.DefaultActionBuilder
 import ba.sake.server.routing.PlayfulRouter
-import ba.sake.shared.ServerRoutes.BlogPostByIdRoute
+import ba.sake.shared.api.routes.BlogPostByIdRoute
 
 class BlogPostController(val Action: DefaultActionBuilder) extends PlayfulRouter {
 
