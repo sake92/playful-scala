@@ -1,10 +1,10 @@
 package ba.sake.client
 
-import ba.sake.shared.api.routes.UserByIdRoute
+import org.scalajs.dom.document
+import ba.sake.client.views.MainComponent
 
 object Main extends App {
 
-  val url = UserByIdRoute(123)().urlData.url
-  
-  println("URL = " + url)
+  val mainElem = document.getElementById("main")
+  mainElem.appendChild(MainComponent.asElement)
 }

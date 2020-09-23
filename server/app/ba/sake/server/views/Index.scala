@@ -6,19 +6,21 @@ import utils.Imports.Bundle._
 
 case class IndexPage(mode: Mode) extends HtmlPage {
 
+  override def siteSettings =
+    super.siteSettings
+      .withName("example.com")
+      .withFaviconNormal("favicon.png")
+
+  override def pageSettings =
+    super.pageSettings.withTitle("Home page")
+
+  /* content */
   val customGrid = Grid.withScreenRatios(
     Grid.screenRatios.withAll(
       Ratios().withSingle(1, 3, 1)
     )
   )
   import customGrid._
-
-  override def siteSettings =
-    super.siteSettings
-      .withName("example.com")
-      .withFaviconNormal("favicon.png")
-
-  override def pageSettings = super.pageSettings.withTitle("Home page")
 
   override def pageContent =
     div(
@@ -33,7 +35,8 @@ case class IndexPage(mode: Mode) extends HtmlPage {
           Selam, merhaba! :)
 
           Running in **$mode mode**!
-        """.md
+        """.md,
+        div(id := "main") // ScalaJS here
       )
     )
 

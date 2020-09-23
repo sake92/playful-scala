@@ -3,7 +3,8 @@ inThisBuild(
     organization := "ba.sake",
     scalaVersion := "2.13.3",
     Compile / scalacOptions ++= List("-Ymacro-annotations", "-deprecation"),
-    resolvers += Resolver.bintrayRepo("stg-tud", "maven")
+    resolvers += Resolver.bintrayRepo("stg-tud", "maven"),
+    resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
   )
 )
 
@@ -22,10 +23,8 @@ lazy val client = (project in file("client"))
   .settings(
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "1.0.0",
       "de.tuda.stg" %%% "rescala" % "0.30.0",
-      "ba.sake" %%% "scalajs-router" % "0.0.5",
-      "ba.sake" %%% "hepek-components" % "0.8.0"
+      "ba.sake" %%% "scalajs-router" % "0.0.5"
     ),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
   )
@@ -39,6 +38,7 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
     libraryDependencies ++= Seq(
       "com.typesafe.play" %%% "play-json" % "2.9.0",
       "ba.sake" %%% "stone-macros" % "0.4.0",
+      "ba.sake" %%% "hepek-components" % "0.8.1+2-a1910104+20200924-0008-SNAPSHOT",
       "org.scalatest" %%% "scalatest" % "3.2.0" % "test"
     )
   )

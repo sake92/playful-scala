@@ -10,13 +10,13 @@ Simplistic full-stack Scala.
 
 ## Run app
 
-1. start sbt with `sbt`
-1. run server with `server/run` (ScalaJS will be compiled automatically)
+1. start `sbt` -> wait for it to load
+1. type `server/run` (ScalaJS will be compiled automatically)
 1. open http://localhost:9000 and enjoy! :)
 
 
 ## Run tests
-For testing ScalaJS code you need to install `jsdom`:
+For testing ScalaJS code you have to install `jsdom`:
 ```bash
 npm install jsdom
 ```

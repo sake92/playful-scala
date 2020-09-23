@@ -1,4 +1,4 @@
-package ba.sake.server.views.utils
+package ba.sake.client.views.utils
 
 import ba.sake.hepek.bootstrap3.BootstrapBundle
 
