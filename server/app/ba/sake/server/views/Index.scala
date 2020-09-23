@@ -6,19 +6,13 @@ import utils.Imports.Bundle._
 
 case class IndexPage(mode: Mode) extends HtmlPage {
 
-  override def siteSettings =
-    super.siteSettings
-      .withName("example.com")
-      .withFaviconNormal("favicon.png")
+  override def siteSettings = super.siteSettings.withName("example.com").withFaviconNormal("favicon.png")
 
-  override def pageSettings =
-    super.pageSettings.withTitle("Home page")
+  override def pageSettings = super.pageSettings.withTitle("Home page")
 
   /* content */
   val customGrid = Grid.withScreenRatios(
-    Grid.screenRatios.withAll(
-      Ratios().withSingle(1, 3, 1)
-    )
+    Grid.screenRatios.withAll(Ratios().withSingle(1, 3, 1))
   )
   import customGrid._
 
@@ -45,6 +39,5 @@ case class IndexPage(mode: Mode) extends HtmlPage {
     super.scriptURLs.appended(s"/assets/client-$scalaJsFile.js")
   }
 
-  override def styleURLs =
-    super.styleURLs.appended("/assets/stylesheets/main.css")
+  override def styleURLs = super.styleURLs.appended("/assets/stylesheets/main.css")
 }

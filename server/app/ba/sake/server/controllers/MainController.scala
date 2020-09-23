@@ -17,9 +17,7 @@ class MainController(val Action: DefaultActionBuilder, val assets: Assets, mode:
       assets.at("/public", file)
 
     case ("GET", _) =>
-      Action {
-        Ok(IndexPage(mode))
-      }
+      Action { Ok(IndexPage(mode)) }
   }
 
 }

@@ -14,23 +14,18 @@ object UsersComponent extends Component {
 
   private val users$ : Var[Vector[User]] = Var(Vector.empty)
 
-  UserService.getUsers().foreach { users =>
-    users$.set(users.toVector)
-  }
+  UserService.getUsers().foreach { users => users$.set(users.toVector) }
 
   override def asElement = {
 
     table(tableClass, tableBordered, tableHoverable)(
-      thead(
-        tr(th("Username"), th("Address"))
-      ),
-      tbody(
-        users$.map { users =>
+      thead(tr(th("Username"), th("Address"))),
+      tbody(users$.map {
+        users =>
           users.map { user =>
             tr(td(user.username), td(user.address))
           }
-        }.asModifierL
-      )
+      }.asModifierL)
     ).render
   }
 

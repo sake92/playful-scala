@@ -10,5 +10,5 @@ object routes {
   @Route class BlogPostByIdRoute(path1: "posts", val blogPostId: Long)()
 
   @Route class AssetRoute(path1: "assets", val filePath: "*")()
- 
+
 }
