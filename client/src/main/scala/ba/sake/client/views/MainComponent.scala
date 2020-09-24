@@ -7,7 +7,6 @@ import ba.sake.client.views.user.UsersComponent
 object MainComponent extends Component {
 
   override def asElement = {
-    println("Render main...")
     UsersComponent.asElement
   }
 }

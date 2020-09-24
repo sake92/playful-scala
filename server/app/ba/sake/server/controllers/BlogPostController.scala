@@ -8,7 +8,7 @@ import ba.sake.shared.api.routes.BlogPostByIdRoute
 class BlogPostController(val Action: DefaultActionBuilder) extends PlayfulRouter {
 
   override val playfulRoutes = {
-    case ("GET", BlogPostByIdRoute(blogPostId)) =>
+    case (GET, BlogPostByIdRoute(blogPostId)) =>
       Action {
         Ok(s"GET BlogPost by id = $blogPostId")
       }

@@ -18,15 +18,18 @@ class AppComponents(context: Context)
     with NoHttpFiltersComponents {
 
   override val router = {
-    val controllers = List(
+
+    val apiControllers = List(
       new UserController(Action, PlayBodyParsers()),
-      new BlogPostController(Action),
-      new MainController(Action, assets, context.environment.mode)
+      new BlogPostController(Action)
     )
-    val routes = controllers.map(_.routes)
+    val apiRoutes = apiControllers.map(_.routes)
       .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
+    val apiRouter = Router.from(apiRoutes).withPrefix("/api")
 
-    Router.from(routes)
+    val mainController = new MainController(Action, assets, context.environment.mode)
+    val mainRouter = Router.from(mainController.routes)
+
+    apiRouter orElse mainRouter
   }
-
 }
