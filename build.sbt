@@ -24,7 +24,7 @@ lazy val client = (project in file("client"))
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "de.tuda.stg" %%% "rescala" % "0.30.0",
-      "ba.sake" %%% "scalajs-router" % "0.0.5"
+      "ba.sake" %%% "scalajs-router" % "0.0.5+0-91f8b2f6+20200924-1600-SNAPSHOT"
     ),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
   )

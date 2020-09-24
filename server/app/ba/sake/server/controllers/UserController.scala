@@ -7,35 +7,46 @@ import play.api.libs.json.Json
 import play.api.libs.json.JsError
 import ba.sake.server.routing.PlayfulRouter
 import ba.sake.shared.api.routes._
-import ba.sake.shared.api.models.user.User
+import ba.sake.shared.api.models.user._
 
 class UserController(val Action: DefaultActionBuilder, val parse: PlayBodyParsers) extends PlayfulRouter {
 
-  private val users = List(User(1, "Sake", "Sarajevo"), User(2, "Meho", "Berlin"), User(3, "Hamo", "Chicago"))
+  private var userIdCounter = 0
+  private var users = List(
+    User(getUserId(), "Sake", "Sarajevo"),
+    User(getUserId(), "Meho", "Berlin"),
+    User(getUserId(), "Hamo", "Chicago")
+  )
 
   override val playfulRoutes = {
-    case (GET, UserByIdRoute(userId)) =>
-      Action {
+
+    case (GET, UserByIdRoute(userId)) => Action {
         val user = users.find(_.id == userId).get
         Ok(Json.toJson(user))
       }
-    case (GET, UsersRoute()) =>
-      Action {
+
+    case (GET, UsersRoute()) => Action {
         Ok(Json.toJson(users))
       }
-    case (POST, UsersRoute()) =>
-      Action(parse.json) { req =>
-        println(req.body)
-        req.body.validate[User].fold(
+
+    case (POST, UsersRoute()) => Action(parse.json) { req =>
+        req.body.validate[CreateUserRequest].fold(
           errors => {
             BadRequest(Json.obj("message" -> JsError.toJson(errors)))
           },
-          user => {
-            Ok(Json.toJson(user))
+          createUserReq => {
+            val newUser = User(getUserId(), createUserReq.username, createUserReq.address)
+            users = users.appended(newUser)
+            Ok(Json.toJson(newUser))
           }
         )
 
       }
+  }
+
+  private def getUserId(): Long = {
+    userIdCounter += 1
+    userIdCounter
   }
 
 }

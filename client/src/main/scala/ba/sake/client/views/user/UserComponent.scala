@@ -8,10 +8,9 @@ import rescala.extra.Tags._
 import ba.sake.scalajs_router.Component
 import ba.sake.client.services.UserService
 import ba.sake.shared.api.models.user.User
-import ba.sake.shared.api.routes.UserByIdRoute
 import utils.Imports.Bundle._, Classes._
 
-object UsersComponent extends Component {
+case class UserComponent(userId: Long) extends Component {
 
   private val users$ = Var(Vector.empty[User])
 
@@ -20,22 +19,8 @@ object UsersComponent extends Component {
   }
 
   override def asElement = {
-    table(tableClass, tableBordered, tableHoverable)(
-      thead(
-        tr(th("Username"), th("Address"), th())
-      ),
-      tbody(
-        users$.map { users =>
-          users.map { user =>
-            tr(
-              td(user.username),
-              td(user.address),
-              td(a(href := UserByIdRoute(user.id)().urlData.url)("Edit"))
-            )
-          }
-        }.asModifierL
-      )
-    ).render
+
+    div("Userrrrrrr " + userId).render
   }
 
 }

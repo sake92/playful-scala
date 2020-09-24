@@ -23,9 +23,9 @@ class AppComponents(context: Context)
       new BlogPostController(Action),
       new MainController(Action, assets, context.environment.mode)
     )
-    val routes =
-      controllers.map(_.routes)
-        .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
+    val routes = controllers.map(_.routes)
+      .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
+
     Router.from(routes)
   }
 
