@@ -25,10 +25,9 @@ case class IndexPage(mode: Mode) extends HtmlPage {
       ),
       row(
         s"""
-          ## Opa
-          Selam, merhaba! :)
+          ## Hello Scala! :)
 
-          Running in **$mode mode**!
+          Currently running in **$mode** mode.
         """.md,
         div(id := "main") // ScalaJS here
       )

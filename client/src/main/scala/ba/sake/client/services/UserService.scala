@@ -4,7 +4,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalajs.dom.ext.Ajax
 import play.api.libs.json.Json
-import ba.sake.shared.api.routes.UsersRoute
+import ba.sake.shared.api.routes._
 import ba.sake.shared.api.models.user.User
 
 object UserService {
@@ -14,6 +14,14 @@ object UserService {
     Ajax.get(url).map { xhr =>
       val parsedJson = Json.parse(xhr.responseText)
       Json.fromJson[Seq[User]](parsedJson).get // TODO handle errors
+    }
+  }
+
+  def getUser(userId: Long): Future[Option[User]] = {
+    val url = UserByIdRoute(userId)().urlData.url
+    Ajax.get(url).map { xhr =>
+      val parsedJson = Json.parse(xhr.responseText)
+      Json.fromJson[User](parsedJson).asOpt
     }
   }
 }

@@ -7,15 +7,17 @@ import ba.sake.client.views._, user._
 
 object Main extends App {
 
+  val router = Router()
+
   val routes: Router.Routes = {
-    case "/"                   => MainComponent
+    case "/"                   => MainComponent(router)
     case UserByIdRoute(userId) => UserComponent(userId)
   }
 
-  Router(
+  router.withRoutesData(
     mountId = "main",
     routes = routes,
-    notFoundComponent = MainComponent
+    notFoundComponent = MainComponent(router)
   ).init()
-  
+
 }
