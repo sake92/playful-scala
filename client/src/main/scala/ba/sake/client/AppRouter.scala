@@ -11,7 +11,8 @@ class AppRouter {
 
   private val routes: Router.Routes = {
     case "/"                   => MainComponent(appContext)
-    case UserByIdRoute(userId) => UserComponent(userId)
+    case UserEditRoute(userId) => UserComponent(appContext, Some(userId))
+    case UserCreateRoute()     => UserComponent(appContext, None)
     case UsersRoute()          => UsersListComponent(appContext)
   }
 
@@ -21,7 +22,11 @@ class AppRouter {
     notFoundComponent = MainComponent(appContext)
   ).init()
 
-  def navigateTo(route: UserByIdRoute): Unit = {
+  def navigateTo(route: UserEditRoute): Unit = {
+    router.navigateTo(route.urlData.url)
+  }
+
+  def navigateTo(route: UserCreateRoute): Unit = {
     router.navigateTo(route.urlData.url)
   }
 

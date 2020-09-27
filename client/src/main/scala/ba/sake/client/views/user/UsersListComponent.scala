@@ -1,15 +1,14 @@
-package ba.sake.client.views. user
+package ba.sake.client.views.user
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scalatags.JsDom.all._
-import org.scalajs.dom.raw.MouseEvent
+import org.scalajs.dom
 import rescala.default._
 import rescala.extra.Tags._
+import scalatags.JsDom.all._
 import ba.sake.scalajs_router.Component
-import ba.sake.scalajs_router.Router
-import ba.sake.client.services.UserService
 import ba.sake.shared.api.models.user.User
-import ba.sake.shared.client.routes.UserByIdRoute
+import ba.sake.shared.client.routes._
+import ba.sake.client.services.UserService
 import ba.sake.client.views.utils.Imports.Bundle._, Classes._
 import ba.sake.client.AppRouter
 
@@ -35,8 +34,8 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
                 td(user.username),
                 td(user.email),
                 td(button(
-                  onclick := { (e: MouseEvent) =>
-                    appRouter.navigateTo(UserByIdRoute(user.id)())
+                  onclick := { (e: dom.MouseEvent) =>
+                    appRouter.navigateTo(UserEditRoute(user.id)())
                   },
                   btnClass
                 )("Edit"))
@@ -44,7 +43,14 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
             }
           }.asModifierL
         )
-      )
+      ),
+      button(
+        btnClass,
+        btnPrimary,
+        onclick := { (e: dom.MouseEvent) =>
+          appRouter.navigateTo(UserCreateRoute()())
+        }
+      )("Create")
     ).render
 
 }

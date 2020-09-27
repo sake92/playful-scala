@@ -30,7 +30,7 @@ class UserController(val Action: DefaultActionBuilder, val parse: PlayBodyParser
       }
 
     case (POST, UsersRoute()) => Action(parse.json) { req =>
-        req.body.validate[CreateUserRequest].fold(
+        req.body.validate[CreateOrUpdateUserRequest].fold(
           errors => {
             BadRequest(Json.obj("message" -> JsError.toJson(errors)))
           },
@@ -40,7 +40,20 @@ class UserController(val Action: DefaultActionBuilder, val parse: PlayBodyParser
             Ok(Json.toJson(newUser))
           }
         )
+      }
 
+    case (PUT, UserByIdRoute(userId)) => Action(parse.json) { req =>
+        req.body.validate[CreateOrUpdateUserRequest].fold(
+          errors => {
+            BadRequest(Json.obj("message" -> JsError.toJson(errors)))
+          },
+          updateUserReq => {
+            val idx = users.indexWhere(_.id == userId)
+            val updatedUser = users(idx).copy(username = updateUserReq.username, email = updateUserReq.email)
+            users = users.updated(idx, updatedUser)
+            Ok(Json.toJson(updatedUser))
+          }
+        )
       }
   }
 

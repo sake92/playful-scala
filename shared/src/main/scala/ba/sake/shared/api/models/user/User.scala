@@ -8,8 +8,8 @@ object User {
   implicit val userFormat = Json.format[User]
 }
 
-case class CreateUserRequest(username: String, email: String)
+case class CreateOrUpdateUserRequest(username: String, email: String)
 
-object CreateUserRequest {
-  implicit val createUserRequestFormat = Json.format[CreateUserRequest]
+object CreateOrUpdateUserRequest {
+  implicit val createOrUpdateUserRequestFormat = Json.format[CreateOrUpdateUserRequest]
 }
