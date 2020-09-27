@@ -7,19 +7,19 @@ import ba.sake.client.views._, user._
 class AppRouter {
   val router = Router()
 
-  private val appContext = this
+  private val appRouter = this
 
   private val routes: Router.Routes = {
-    case "/"                   => MainComponent(appContext)
-    case UserEditRoute(userId) => UserComponent(appContext, Some(userId))
-    case UserCreateRoute()     => UserComponent(appContext, None)
-    case UsersRoute()          => UsersListComponent(appContext)
+    case "/"                   => MainComponent(appRouter)
+    case UserEditRoute(userId) => UserComponent(appRouter, Some(userId))
+    case UserCreateRoute()     => UserComponent(appRouter, None)
+    case UsersRoute()          => UsersListComponent(appRouter)
   }
 
   router.withRoutesData(
     mountId = "main",
     routes = routes,
-    notFoundComponent = MainComponent(appContext)
+    notFoundComponent = MainComponent(appRouter)
   ).init()
 
   def navigateTo(route: UserEditRoute): Unit = {
