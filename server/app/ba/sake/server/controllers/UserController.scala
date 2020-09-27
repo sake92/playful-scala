@@ -13,9 +13,9 @@ class UserController(val Action: DefaultActionBuilder, val parse: PlayBodyParser
 
   private var userIdCounter = 0
   private var users = List(
-    User(getUserId(), "Sake", "Sarajevo"),
-    User(getUserId(), "Meho", "Berlin"),
-    User(getUserId(), "Hamo", "Chicago")
+    User(getUserId(), "Sake", "sake@example.com"),
+    User(getUserId(), "Meho", "meho@example.com"),
+    User(getUserId(), "Hamo", "hamo@example.com")
   )
 
   override val playfulRoutes = {
