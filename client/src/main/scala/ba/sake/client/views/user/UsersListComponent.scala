@@ -26,14 +26,14 @@ case class UsersListComponent(router: Router) extends Component {
       h3("Users list"),
       table(tableClass, tableBordered, tableHoverable)(
         thead(
-          tr(th("Username"), th("Address"), th())
+          tr(th("Username"), th("Email"), th())
         ),
         tbody(
           users$.map { users =>
             users.map { user =>
               tr(
                 td(user.username),
-                td(user.address),
+                td(user.email),
                 td(button(
                   onclick := { (e: MouseEvent) =>
                     router.navigateTo(UserByIdRoute(user.id)().urlData.url)

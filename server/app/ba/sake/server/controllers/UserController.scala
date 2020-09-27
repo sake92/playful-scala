@@ -35,7 +35,7 @@ class UserController(val Action: DefaultActionBuilder, val parse: PlayBodyParser
             BadRequest(Json.obj("message" -> JsError.toJson(errors)))
           },
           createUserReq => {
-            val newUser = User(getUserId(), createUserReq.username, createUserReq.address)
+            val newUser = User(getUserId(), createUserReq.username, createUserReq.email)
             users = users.appended(newUser)
             Ok(Json.toJson(newUser))
           }

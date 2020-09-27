@@ -3,15 +3,16 @@ inThisBuild(
     organization := "ba.sake",
     scalaVersion := "2.13.3",
     Compile / scalacOptions ++= List("-Ymacro-annotations", "-deprecation"),
-    resolvers += Resolver.bintrayRepo("stg-tud", "maven"),
-    resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+    resolvers += Resolver.bintrayRepo("stg-tud", "maven")
   )
 )
+
+val hepekVersion = "0.8.3"
 
 lazy val server = (project in file("server"))
   .settings(
     libraryDependencies ++= Seq(
-      "ba.sake" %% "hepek-play" % "0.8.0"
+      "ba.sake" %% "hepek-play" % hepekVersion
     ),
     scalaJSProjects := Seq(client), // "depends" on client JS code
     pipelineStages in Assets := Seq(scalaJSPipeline) // copies JS code to Play server assets
@@ -24,7 +25,8 @@ lazy val client = (project in file("client"))
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
       "de.tuda.stg" %%% "rescala" % "0.30.0",
-      "ba.sake" %%% "scalajs-router" % "0.0.6+0-bde70df5+20200924-2300-SNAPSHOT"
+      "ba.sake" %%% "scalajs-router" % "0.0.7",
+      "ba.sake" %%% "hepek-components" % hepekVersion
     ),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()
   )
@@ -38,7 +40,6 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
     libraryDependencies ++= Seq(
       "com.typesafe.play" %%% "play-json" % "2.9.0",
       "ba.sake" %%% "stone-macros" % "0.4.0",
-      "ba.sake" %%% "hepek-components" % "0.8.1+2-a1910104+20200924-0008-SNAPSHOT",
       "org.scalatest" %%% "scalatest" % "3.2.0" % "test"
     )
   )
