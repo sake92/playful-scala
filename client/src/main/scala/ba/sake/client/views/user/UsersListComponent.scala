@@ -8,9 +8,9 @@ import scalatags.JsDom.all._
 import ba.sake.scalajs_router.Component
 import ba.sake.shared.api.models.user.User
 import ba.sake.shared.client.routes._
+import ba.sake.client.AppRouter
 import ba.sake.client.services.UserService
 import ba.sake.client.views.utils.Imports.Bundle._, Classes._
-import ba.sake.client.AppRouter
 
 case class UsersListComponent(appRouter: AppRouter) extends Component {
 

@@ -15,10 +15,7 @@ trait PlayfulRouter extends SimpleRouter with PlayfulConsts {
   def playfulRoutes: PlayfulRouter.Routes
 
   // adapt to match only on (method, URI)
-  override def routes: Router.Routes =
-    playfulRoutes.compose { case rh: RequestHeader =>
-      (rh.method, rh.uri)
-    }
+  override def routes: Router.Routes = playfulRoutes.compose { case rh: RequestHeader => (rh.method, rh.uri) }
 }
 
 private[routing] trait PlayfulConsts {
