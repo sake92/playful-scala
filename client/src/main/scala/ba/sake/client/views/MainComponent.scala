@@ -1,12 +1,13 @@
 package ba.sake.client.views
 
 import scalatags.JsDom.all._
-import ba.sake.scalajs_router._
+import ba.sake.scalajs_router.Component
 import ba.sake.client.views.user.UsersListComponent
+import ba.sake.client.AppRouter
 
-case class MainComponent(router: Router) extends Component {
+case class MainComponent(appRouter: AppRouter) extends Component {
 
   override def asElement = {
-    UsersListComponent(router).asElement
+    UsersListComponent(appRouter).asElement
   }
 }

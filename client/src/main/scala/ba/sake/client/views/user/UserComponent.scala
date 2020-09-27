@@ -1,5 +1,4 @@
-package ba.sake.client.views
-package user
+package ba.sake.client.views.user
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalajs.dom
@@ -9,7 +8,7 @@ import rescala.extra.Tags._
 import ba.sake.scalajs_router.Component
 import ba.sake.shared.api.models.user.User
 import ba.sake.client.services.UserService
-import utils._
+import ba.sake.client.views.utils._
 import Imports.Bundle._, Classes._
 
 case class UserComponent(userId: Long) extends Component {

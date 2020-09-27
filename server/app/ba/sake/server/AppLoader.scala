@@ -20,8 +20,7 @@ class AppComponents(context: Context)
   override val router = {
 
     val apiControllers = List(
-      new UserController(Action, PlayBodyParsers()),
-      new BlogPostController(Action)
+      new UserController(Action, PlayBodyParsers())
     )
     val apiRoutes = apiControllers.map(_.routes)
       .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)

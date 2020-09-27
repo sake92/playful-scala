@@ -1,5 +1,4 @@
-package ba.sake.client.views
-package user
+package ba.sake.client.views. user
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scalatags.JsDom.all._
@@ -11,9 +10,10 @@ import ba.sake.scalajs_router.Router
 import ba.sake.client.services.UserService
 import ba.sake.shared.api.models.user.User
 import ba.sake.shared.client.routes.UserByIdRoute
-import utils.Imports.Bundle._, Classes._
+import ba.sake.client.views.utils.Imports.Bundle._, Classes._
+import ba.sake.client.AppRouter
 
-case class UsersListComponent(router: Router) extends Component {
+case class UsersListComponent(appRouter: AppRouter) extends Component {
 
   private val users$ = Var(Vector.empty[User])
 
@@ -36,7 +36,7 @@ case class UsersListComponent(router: Router) extends Component {
                 td(user.email),
                 td(button(
                   onclick := { (e: MouseEvent) =>
-                    router.navigateTo(UserByIdRoute(user.id)().urlData.url)
+                    appRouter.navigateTo(UserByIdRoute(user.id)())
                   },
                   btnClass
                 )("Edit"))
