@@ -45,15 +45,16 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   private def sendData(e: dom.Event): Unit = {
     e.preventDefault()
 
-    val formValue = FormValue.fromEvent(e.target)
-    val username = formValue.inputValue("username").trim
-    val email = formValue.inputValue("email").trim
+    val formValues = FormValues.fromEvent(e.target)
+    val username = formValues.getValue("username").trim
+    val email = formValues.getValue("email").trim
     if (username.isEmpty) return
 
     val user = CreateOrUpdateUserRequest(username, email)
-    val futureRes = maybeUserId.map { userId =>
-      UserService.update(userId, user)
-    }.getOrElse(UserService.create(user))
+    val futureRes = maybeUserId match {
+      case Some(userId) => UserService.update(userId, user)
+      case None         => UserService.create(user)
+    }
 
     futureRes.map { user =>
       appRouter.router.navigateTo("/")
