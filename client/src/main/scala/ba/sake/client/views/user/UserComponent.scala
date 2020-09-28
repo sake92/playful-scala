@@ -35,11 +35,11 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
         form(onsubmit := (submitForm _))(
           inputText(
             value := user$.map(_.username),
-            onkeyup := updateUser((u, v) => u.copy(username = v))
+            onkeyup := updateUser((user, v) => user.copy(username = v))
           )("username", "Username"),
           inputEmail(
             value := user$.map(_.email),
-            onkeyup := updateUser((u, v) => u.copy(email = v))
+            onkeyup := updateUser((user, v) => user.copy(email = v))
           )("email", "Email"),
           inputSubmit()("Submit")
         )
