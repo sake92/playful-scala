@@ -47,7 +47,7 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
     ).render
   }
 
-  // we return a Function from keyboard event to unit.. :)
+  // we return a Function here!
   private def updateUser(f: (User, String) => User): (dom.KeyboardEvent => Unit) =
     e => {
       val newValue = e.target.asInstanceOf[dom.html.Input].value
