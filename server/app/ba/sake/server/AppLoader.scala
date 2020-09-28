@@ -2,11 +2,11 @@ package ba.sake.server
 
 import _root_.controllers.AssetsComponents
 import play.api._
-import play.api.mvc._
 import play.api.ApplicationLoader.Context
+import play.api.mvc._
 import play.api.routing.Router
 import ba.sake.server.controllers._
-import ba.sake.server.services.UserService
+import ba.sake.server.services._
 
 class AppLoader extends ApplicationLoader {
 
@@ -25,8 +25,9 @@ class AppComponents(context: Context)
     val apiControllers = List(
       new UserController(Action, PlayBodyParsers(), userService)
     )
-    val apiRoutes = apiControllers.map(_.routes)
-      .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
+    val apiRoutes =
+      apiControllers.map(_.routes)
+        .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
     val apiRouter = Router.from(apiRoutes).withPrefix("/api")
 
     val mainController = new MainController(Action, assets, context.environment.mode)

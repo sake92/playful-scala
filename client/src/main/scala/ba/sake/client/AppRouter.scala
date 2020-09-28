@@ -10,10 +10,14 @@ class AppRouter {
   private val appRouter = this
 
   private val routes: Router.Routes = {
-    case "/"                   => MainComponent(appRouter)
-    case UserEditRoute(userId) => UserComponent(appRouter, Some(userId))
-    case UserCreateRoute()     => UserComponent(appRouter, None)
-    case UsersRoute()          => UsersListComponent(appRouter)
+    case "/" =>
+      MainComponent(appRouter)
+    case UserEditRoute(userId) =>
+      UserComponent(appRouter, Some(userId))
+    case UserCreateRoute() =>
+      UserComponent(appRouter, None)
+    case UsersRoute() =>
+      UsersListComponent(appRouter)
   }
 
   router.withRoutesData(

@@ -60,10 +60,13 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
     val user = user$.now
     val userReq = CreateOrUpdateUserRequest(user.username, user.email)
 
-    val futureRes = maybeUserId match {
-      case Some(userId) => UserService.update(UserByIdRoute(userId)(), userReq)
-      case None         => UserService.create(userReq)
-    }
+    val futureRes =
+      maybeUserId match {
+        case Some(userId) =>
+          UserService.update(UserByIdRoute(userId)(), userReq)
+        case None =>
+          UserService.create(userReq)
+      }
 
     futureRes.map { user =>
       appRouter.router.navigateTo("/")
