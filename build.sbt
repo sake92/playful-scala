@@ -3,11 +3,12 @@ inThisBuild(
     organization := "ba.sake",
     scalaVersion := "2.13.3",
     Compile / scalacOptions ++= List("-Ymacro-annotations", "-deprecation"),
-    resolvers += Resolver.bintrayRepo("stg-tud", "maven")
+    resolvers += Resolver.bintrayRepo("stg-tud", "maven"),
+    resolvers += Resolver.sonatypeRepo("snapshots")
   )
 )
 
-val hepekVersion = "0.8.3"
+val hepekVersion = "0.8.3+2-f01036cc-SNAPSHOT"
 
 lazy val server = (project in file("server"))
   .settings(

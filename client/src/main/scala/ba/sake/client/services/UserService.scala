@@ -18,8 +18,8 @@ object UserService {
     }
   }
 
-  def getUser(userId: Long): Future[Option[User]] = {
-    val url = UserByIdRoute(userId)().urlData.url
+  def getUser(route: UserByIdRoute): Future[Option[User]] = {
+    val url = route.urlData.url
     Ajax.get(url).map { xhr =>
       val parsedJson = Json.parse(xhr.responseText)
       Json.fromJson[User](parsedJson).asOpt
@@ -28,19 +28,19 @@ object UserService {
 
   def create(createUserReq: CreateOrUpdateUserRequest): Future[User] = {
     val url = UsersRoute()().urlData.url
-    val userJson = Json.stringify(Json.toJson(createUserReq))
+    val reqJson = Json.stringify(Json.toJson(createUserReq))
     val headers = Map("Content-Type" -> "application/json")
-    Ajax.post(url, userJson, headers = headers).map { xhr =>
+    Ajax.post(url, reqJson, headers = headers).map { xhr =>
       val parsedJson = Json.parse(xhr.responseText)
       Json.fromJson[User](parsedJson).get
     }
   }
 
-  def update(userId: Long, updateUserReq: CreateOrUpdateUserRequest): Future[User] = {
-    val url = UserByIdRoute(userId)().urlData.url
-    val userJson = Json.stringify(Json.toJson(updateUserReq))
+  def update(route: UserByIdRoute, updateUserReq: CreateOrUpdateUserRequest): Future[User] = {
+    val url = route.urlData.url
+    val reqJson = Json.stringify(Json.toJson(updateUserReq))
     val headers = Map("Content-Type" -> "application/json")
-    Ajax.put(url, userJson, headers = headers).map { xhr =>
+    Ajax.put(url, reqJson, headers = headers).map { xhr =>
       val parsedJson = Json.parse(xhr.responseText)
       Json.fromJson[User](parsedJson).get
     }

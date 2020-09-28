@@ -6,6 +6,7 @@ import play.api.mvc._
 import play.api.ApplicationLoader.Context
 import play.api.routing.Router
 import ba.sake.server.controllers._
+import ba.sake.server.services.UserService
 
 class AppLoader extends ApplicationLoader {
 
@@ -19,8 +20,10 @@ class AppComponents(context: Context)
 
   override val router = {
 
+    val userService = new UserService
+
     val apiControllers = List(
-      new UserController(Action, PlayBodyParsers())
+      new UserController(Action, PlayBodyParsers(), userService)
     )
     val apiRoutes = apiControllers.map(_.routes)
       .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)

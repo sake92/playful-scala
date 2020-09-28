@@ -8,6 +8,7 @@ import scalatags.JsDom.all._
 import ba.sake.scalajs_router.Component
 import ba.sake.shared.api.models.user.User
 import ba.sake.shared.api.models.user.CreateOrUpdateUserRequest
+import ba.sake.shared.api.routes.UserByIdRoute
 import ba.sake.client.AppRouter
 import ba.sake.client.services.UserService
 import ba.sake.client.views.utils._
@@ -20,7 +21,7 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   private val actionName = maybeUserId.map(_ => "Edit").getOrElse("Create")
 
   maybeUserId.foreach { userId =>
-    UserService.getUser(userId).foreach { user =>
+    UserService.getUser(UserByIdRoute(userId)()).foreach { user =>
       user.map(user$.set)
     }
   }
@@ -30,30 +31,38 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
     div(
       h3(s"$actionName User:"),
       br,
-      user$.map { user =>
-        div(
-          form(onsubmit := (sendData _))(
-            inputText(value := user.username)("username", "Username"),
-            inputEmail(value := user.email)("email", "Email"),
-            inputSubmit()("Submit")
-          )
+      div(
+        form(onsubmit := (submitForm _))(
+          inputText(
+            value := user$.map(_.username),
+            onkeyup := updateUser((u, v) => u.copy(username = v))
+          )("username", "Username"),
+          inputEmail(
+            value := user$.map(_.email),
+            onkeyup := updateUser((u, v) => u.copy(email = v))
+          )("email", "Email"),
+          inputSubmit()("Submit")
         )
-      }.asModifier
+      )
     ).render
   }
 
-  private def sendData(e: dom.Event): Unit = {
+  // we return a Function from keyboard event to unit.. :)
+  private def updateUser(f: (User, String) => User): (dom.KeyboardEvent => Unit) =
+    e => {
+      val newValue = e.target.asInstanceOf[dom.html.Input].value
+      user$.transform(u => f(u, newValue))
+    }
+
+  private def submitForm(e: dom.Event): Unit = {
     e.preventDefault()
 
-    val formValues = FormValues.fromEvent(e.target)
-    val username = formValues.getValue("username").trim
-    val email = formValues.getValue("email").trim
-    if (username.isEmpty) return
+    val user = user$.now
+    val userReq = CreateOrUpdateUserRequest(user.username, user.email)
 
-    val user = CreateOrUpdateUserRequest(username, email)
     val futureRes = maybeUserId match {
-      case Some(userId) => UserService.update(userId, user)
-      case None         => UserService.create(user)
+      case Some(userId) => UserService.update(UserByIdRoute(userId)(), userReq)
+      case None         => UserService.create(userReq)
     }
 
     futureRes.map { user =>
