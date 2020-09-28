@@ -5,6 +5,7 @@ import play.api.mvc.RequestHeader
 import play.api.routing.Router
 import play.api.routing.SimpleRouter
 
+
 // TODO extract in a library..?
 object PlayfulRouter {
   type Routes = PartialFunction[(String, String), Handler]

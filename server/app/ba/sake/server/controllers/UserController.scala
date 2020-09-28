@@ -1,5 +1,6 @@
 package ba.sake.server.controllers
 
+import scala.concurrent.ExecutionContext
 import play.api.mvc.Results._
 import play.api.mvc.DefaultActionBuilder
 import play.api.mvc.PlayBodyParsers
@@ -14,7 +15,8 @@ class UserController(
     val Action: DefaultActionBuilder,
     val parse: PlayBodyParsers,
     val userService: UserService
-) extends PlayfulRouter {
+)(implicit val ec: ExecutionContext)
+    extends PlayfulJsonController {
 
   override val playfulRoutes = {
 
@@ -29,28 +31,14 @@ class UserController(
         Ok(Json.toJson(userService.findAll()))
       }
 
-    case (POST, UsersRoute()) => Action(parse.json) { req =>
-        req.body.validate[CreateOrUpdateUserRequest].fold(
-          errors => {
-            BadRequest(Json.obj("message" -> JsError.toJson(errors)))
-          },
-          createUserReq => {
-            val newUser = userService.create(createUserReq)
-            Ok(Json.toJson(newUser))
-          }
-        )
+    case (POST, UsersRoute()) => Action(validateJson[CreateOrUpdateUserRequest]) { req =>
+        val newUser = userService.create(req.body)
+        Ok(Json.toJson(newUser))
       }
 
-    case (PUT, UserByIdRoute(userId)) => Action(parse.json) { req =>
-        req.body.validate[CreateOrUpdateUserRequest].fold(
-          errors => {
-            BadRequest(Json.obj("message" -> JsError.toJson(errors)))
-          },
-          updateUserReq => {
-            val updatedUser = userService.update(userId, updateUserReq)
-            Ok(Json.toJson(updatedUser))
-          }
-        )
+    case (PUT, UserByIdRoute(userId)) => Action(validateJson[CreateOrUpdateUserRequest]) { req =>
+        val updatedUser = userService.update(userId, req.body)
+        Ok(Json.toJson(updatedUser))
       }
   }
 

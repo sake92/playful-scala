@@ -1,15 +1,16 @@
 package ba.sake.server.controllers
 
+
 import controllers.Assets
 import play.api.mvc.Results._
 import play.api.mvc.DefaultActionBuilder
 import play.api.Mode
 import ba.sake.hepek.play.implicits._
 import ba.sake.shared.api.routes.AssetRoute
-import ba.sake.server.routing.PlayfulRouter
 import ba.sake.server.views.IndexPage
 
-class MainController(val Action: DefaultActionBuilder, val assets: Assets, mode: Mode) extends PlayfulRouter {
+
+class MainController(val Action: DefaultActionBuilder, val assets: Assets, mode: Mode) extends PlayfulController {
 
   override val playfulRoutes = {
 
