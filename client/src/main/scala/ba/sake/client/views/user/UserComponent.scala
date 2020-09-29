@@ -21,7 +21,7 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   private val actionName = maybeUserId.map(_ => "Edit").getOrElse("Create")
 
   maybeUserId.foreach { userId =>
-    UserService.getUser(UserByIdRoute(userId)()).foreach { user =>
+    UserService.getUser(UserByIdRoute(userId)).foreach { user =>
       user.map(user$.set)
     }
   }
@@ -63,7 +63,7 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
     val futureRes =
       maybeUserId match {
         case Some(userId) =>
-          UserService.update(UserByIdRoute(userId)(), userReq)
+          UserService.update(UserByIdRoute(userId), userReq)
         case None =>
           UserService.create(userReq)
       }

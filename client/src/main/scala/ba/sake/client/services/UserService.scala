@@ -11,7 +11,7 @@ import ba.sake.shared.api.models.user.CreateOrUpdateUserRequest
 object UserService {
 
   def getUsers(): Future[Seq[User]] = {
-    val url = UsersRoute()().urlData.url
+    val url = UsersRoute().urlData.url
     Ajax.get(url).map { xhr =>
       val parsedJson = Json.parse(xhr.responseText)
       Json.fromJson[Seq[User]](parsedJson).get // TODO handle errors
@@ -27,7 +27,7 @@ object UserService {
   }
 
   def create(createUserReq: CreateOrUpdateUserRequest): Future[User] = {
-    val url = UsersRoute()().urlData.url
+    val url = UsersRoute().urlData.url
     val reqJson = Json.stringify(Json.toJson(createUserReq))
     val headers = Map("Content-Type" -> "application/json")
     Ajax.post(url, reqJson, headers = headers).map { xhr =>

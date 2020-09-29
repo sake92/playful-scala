@@ -3,6 +3,7 @@ package ba.sake.client
 import ba.sake.scalajs_router.Router
 import ba.sake.shared.client.routes._
 import ba.sake.client.views._, user._
+import ba.sake.stone.RouteImpl
 
 class AppRouter {
   val router = Router()
@@ -26,15 +27,6 @@ class AppRouter {
     notFoundComponent = MainComponent(appRouter)
   ).init()
 
-  def navigateTo(route: UserEditRoute): Unit = {
-    router.navigateTo(route.urlData.url)
-  }
+  def navigateTo(route: RouteImpl): Unit = router.navigateTo(route.urlData.url)
 
-  def navigateTo(route: UserCreateRoute): Unit = {
-    router.navigateTo(route.urlData.url)
-  }
-
-  def navigateTo(route: UsersRoute): Unit = {
-    router.navigateTo(route.urlData.url)
-  }
 }

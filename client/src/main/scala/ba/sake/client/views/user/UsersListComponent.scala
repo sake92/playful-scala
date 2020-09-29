@@ -36,7 +36,7 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
                 td(
                   button(
                     btnClass,
-                    onclick := { (e: dom.MouseEvent) => appRouter.navigateTo(UserEditRoute(user.id)()) }
+                    onclick := { (e: dom.MouseEvent) => appRouter.navigateTo(UserEditRoute(user.id)) }
                   )("Edit")
                 )
               )
@@ -47,7 +47,7 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
       button(
         btnClass,
         btnPrimary,
-        onclick := { (e: dom.MouseEvent) => appRouter.navigateTo(UserCreateRoute()()) }
+        onclick := { (e: dom.MouseEvent) => appRouter.navigateTo(UserCreateRoute()) }
       )("Create")
     ).render
 

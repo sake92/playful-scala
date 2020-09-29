@@ -40,7 +40,7 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .settings(
     libraryDependencies ++= Seq(
       "com.typesafe.play" %%% "play-json" % "2.9.0",
-      "ba.sake" %%% "stone-macros" % "0.4.0",
+      "ba.sake" %%% "stone-macros" % "0.5.0",
       "org.scalatest" %%% "scalatest" % "3.2.0" % "test"
     )
   )
