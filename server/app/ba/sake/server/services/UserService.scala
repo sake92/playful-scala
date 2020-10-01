@@ -23,7 +23,7 @@ class UserService {
 
   def update(userId: Long, req: CreateOrUpdateUserRequest): User = {
     val idx = users.indexWhere(_.id == userId)
-    val updatedUser = users(idx).copy(username = req.username, email = req.email)
+    val updatedUser = users(idx).copy(username = req.username, email = req.email, langs = req.langs)
     users = users.updated(idx, updatedUser)
     updatedUser
   }

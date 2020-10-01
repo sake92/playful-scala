@@ -20,29 +20,23 @@ class UserController(
 
   override val playfulRoutes = {
 
-    case GET -> UserByIdRoute(userId) =>
-      Action {
+    case GET -> UserByIdRoute(userId) => Action {
         userService.findById(userId) match {
-          case Some(user) =>
-            Ok(Json.toJson(user))
-          case None =>
-            NotFound
+          case Some(user) => Ok(Json.toJson(user))
+          case None       => NotFound
         }
       }
 
-    case GET -> UsersRoute() =>
-      Action {
+    case GET -> UsersRoute() => Action {
         Ok(Json.toJson(userService.findAll()))
       }
 
-    case POST -> UsersRoute() =>
-      Action(validateJson[CreateOrUpdateUserRequest]) { req =>
+    case POST -> UsersRoute() => Action(validateJson[CreateOrUpdateUserRequest]) { req =>
         val newUser = userService.create(req.body)
         Ok(Json.toJson(newUser))
       }
 
-    case PUT -> UserByIdRoute(userId) =>
-      Action(validateJson[CreateOrUpdateUserRequest]) { req =>
+    case PUT -> UserByIdRoute(userId) => Action(validateJson[CreateOrUpdateUserRequest]) { req =>
         val updatedUser = userService.update(userId, req.body)
         Ok(Json.toJson(updatedUser))
       }

@@ -13,6 +13,7 @@ import ba.sake.client.AppRouter
 import ba.sake.client.services.UserService
 import ba.sake.client.views.utils._
 import Imports.Bundle._, Classes._
+import ba.sake.shared.api.models.user.ProgLang
 
 case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extends Component {
 
@@ -41,6 +42,22 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
             value := user$.map(_.email),
             onkeyup := updateUser((user, v) => user.copy(email = v))
           )("email", "Email"),
+          inputCheckboxes(
+            "langs",
+            ProgLang.values.toSeq.map { pl =>
+              (
+                pl.toString,
+                pl.toString,
+                Seq(
+                  checked := user$.map { u =>
+                    val isChecked = u.langs.exists(_ == pl)
+                    Option.when(isChecked)("checked")
+                  },
+                  onchange := updateUserLang(pl)
+                )
+              )
+            }
+          ),
           inputSubmit()("Submit")
         )
       )
@@ -54,19 +71,27 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
       user$.transform(u => f(u, newValue))
     }
 
+  private def updateUserLang(pl: ProgLang.ProgLang): (dom.Event => Unit) =
+    e => {
+      val isChecked = e.target.asInstanceOf[dom.html.Input].checked
+      user$.transform { u =>
+        val newLangs =
+          if (isChecked) u.langs.appended(pl)
+          else u.langs.filterNot(_ == pl)
+        u.copy(langs = newLangs)
+      }
+    }
+
   private def submitForm(e: dom.Event): Unit = {
     e.preventDefault()
 
     val user = user$.now
-    val userReq = CreateOrUpdateUserRequest(user.username, user.email)
+    val userReq = CreateOrUpdateUserRequest(user.username, user.email, user.langs)
 
-    val futureRes =
-      maybeUserId match {
-        case Some(userId) =>
-          UserService.update(UserByIdRoute(userId), userReq)
-        case None =>
-          UserService.create(userReq)
-      }
+    val futureRes = maybeUserId match {
+      case Some(userId) => UserService.update(UserByIdRoute(userId), userReq)
+      case None         => UserService.create(userReq)
+    }
 
     futureRes.map { user =>
       appRouter.router.navigateTo("/")

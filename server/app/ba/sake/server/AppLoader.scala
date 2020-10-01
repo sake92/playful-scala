@@ -25,9 +25,8 @@ class AppComponents(context: Context)
     val apiControllers = List(
       new UserController(Action, PlayBodyParsers(), userService)
     )
-    val apiRoutes =
-      apiControllers.map(_.routes)
-        .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
+    val apiRoutes = apiControllers.map(_.routes)
+      .foldLeft(PartialFunction.empty[RequestHeader, Handler])(_ orElse _)
     val apiRouter = Router.from(apiRoutes).withPrefix("/api")
 
     val mainController = new MainController(Action, assets, context.environment.mode)

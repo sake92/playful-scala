@@ -25,7 +25,7 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
       h3("Users list"),
       table(tableClass, tableBordered, tableHoverable)(
         thead(
-          tr(th("Username"), th("Email"), th())
+          tr(th("Username"), th("Email"), th("Languages"), th())
         ),
         tbody(
           users$.map { users =>
@@ -33,6 +33,7 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
               tr(
                 td(user.username),
                 td(user.email),
+                td(user.langs.mkString(", ")),
                 td(
                   button(
                     btnClass,

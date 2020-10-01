@@ -33,10 +33,8 @@ case class IndexPage(mode: Mode) extends HtmlPage {
 
   override def scriptURLs = {
     val scalaJsFile =
-      if (mode == Mode.Dev)
-        "fastopt"
-      else
-        "opt"
+      if (mode == Mode.Dev) "fastopt"
+      else "opt"
     super.scriptURLs.appended(s"/assets/client-$scalaJsFile.js")
   }
 

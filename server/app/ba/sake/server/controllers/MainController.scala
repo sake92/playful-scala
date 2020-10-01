@@ -13,11 +13,9 @@ class MainController(val Action: DefaultActionBuilder, val assets: Assets, mode:
 
   override val playfulRoutes = {
 
-    case GET -> AssetRoute(file) =>
-      assets.at("/public", file)
+    case GET -> AssetRoute(file) => assets.at("/public", file)
 
-    case GET -> _ =>
-      Action {
+    case GET -> _ => Action {
         Ok(IndexPage(mode))
       }
   }
