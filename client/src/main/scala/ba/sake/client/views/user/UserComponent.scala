@@ -6,14 +6,12 @@ import rescala.default._
 import rescala.extra.Tags._
 import scalatags.JsDom.all._
 import ba.sake.scalajs_router.Component
-import ba.sake.shared.api.models.user.User
-import ba.sake.shared.api.models.user.CreateOrUpdateUserRequest
+import ba.sake.shared.api.models.user._
 import ba.sake.shared.api.routes.UserByIdRoute
 import ba.sake.client.AppRouter
 import ba.sake.client.services.UserService
 import ba.sake.client.views.utils._
 import Imports.Bundle._, Classes._
-import ba.sake.shared.api.models.user.ProgLang
 
 case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extends Component {
 

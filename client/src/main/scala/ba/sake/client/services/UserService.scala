@@ -45,4 +45,9 @@ object UserService {
       Json.fromJson[User](parsedJson).get
     }
   }
+
+  def delete(route: UserByIdRoute): Future[Unit] = {
+    val url = route.urlData.url
+    Ajax.delete(url).map { _ => () }
+  }
 }

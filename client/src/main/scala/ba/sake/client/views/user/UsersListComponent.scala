@@ -11,6 +11,7 @@ import ba.sake.shared.client.routes._
 import ba.sake.client.AppRouter
 import ba.sake.client.services.UserService
 import ba.sake.client.views.utils.Imports.Bundle._, Classes._
+import ba.sake.shared.api.routes.UserByIdRoute
 
 case class UsersListComponent(appRouter: AppRouter) extends Component {
 
@@ -38,7 +39,12 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
                   button(
                     btnClass,
                     onclick := { (e: dom.MouseEvent) => appRouter.navigateTo(UserEditRoute(user.id)) }
-                  )("Edit")
+                  )("Edit"),
+                  button(
+                    btnClass,
+                    btnDanger,
+                    onclick := { (e: dom.MouseEvent) => deleteUser(user) }
+                  )("Delete")
                 )
               )
             }
@@ -52,4 +58,9 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
       )("Create")
     ).render
 
+  private def deleteUser(user: User) = {
+    UserService.delete(UserByIdRoute(user.id)).map { _ =>
+      users$.transform(_.filterNot(_ == user))
+    }
+  }
 }

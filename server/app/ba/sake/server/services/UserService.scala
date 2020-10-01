@@ -16,7 +16,7 @@ class UserService {
   def findById(userId: Long): Option[User] = users.find(_.id == userId)
 
   def create(req: CreateOrUpdateUserRequest): User = {
-    val newUser = User(getUserId(), req.username, req.email)
+    val newUser = User(getUserId(), req.username, req.email, req.langs)
     users = users.appended(newUser)
     newUser
   }
@@ -26,6 +26,10 @@ class UserService {
     val updatedUser = users(idx).copy(username = req.username, email = req.email, langs = req.langs)
     users = users.updated(idx, updatedUser)
     updatedUser
+  }
+
+  def delete(userId: Long): Unit = {
+    users = users.filterNot(_.id == userId)
   }
 
   private def getUserId(): Long = {

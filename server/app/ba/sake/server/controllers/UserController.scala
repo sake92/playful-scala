@@ -40,6 +40,11 @@ class UserController(
         val updatedUser = userService.update(userId, req.body)
         Ok(Json.toJson(updatedUser))
       }
+
+    case DELETE -> UserByIdRoute(userId) => Action { req =>
+        userService.delete(userId)
+        Ok
+      }
   }
 
 }
