@@ -54,7 +54,8 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
                   onchange := updateUserLang(pl)
                 )
               )
-            }
+            },
+            _label = "Languages"
           ),
           inputSubmit()("Submit")
         )
