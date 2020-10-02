@@ -1,5 +1,6 @@
 package ba.sake.server.services
 
+import io.scalaland.chimney.dsl._
 import ba.sake.shared.api.models.user._
 
 class UserService {
@@ -16,14 +17,14 @@ class UserService {
   def findById(userId: Long): Option[User] = users.find(_.id == userId)
 
   def create(req: CreateOrUpdateUserReq): User = {
-    val newUser = User(getUserId(), req.username, req.email, req.langs)
+    val newUser = req.into[User].withFieldConst(_.id, getUserId()).transform
     users = users.appended(newUser)
     newUser
   }
 
   def update(userId: Long, req: CreateOrUpdateUserReq): User = {
     val idx = users.indexWhere(_.id == userId)
-    val updatedUser = users(idx).copy(username = req.username, email = req.email, langs = req.langs)
+    val updatedUser = users(idx).patchUsing(req)
     users = users.updated(idx, updatedUser)
     updatedUser
   }
