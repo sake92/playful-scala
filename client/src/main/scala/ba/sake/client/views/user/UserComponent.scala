@@ -14,14 +14,19 @@ import ba.sake.client.views.utils._
 import Imports.Bundle._, Classes._
 
 case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extends Component {
+  import UserComponent.UserModel
 
-  private val user$ = Var(User(1, "", ""))
+  private val user$ = Var(UserModel("", ""))
 
   private val actionName = maybeUserId.map(_ => "Edit").getOrElse("Create")
 
   maybeUserId.foreach { userId =>
-    UserService.getUser(UserByIdRoute(userId)).foreach { user =>
-      user.map(user$.set)
+    UserService.getUser(UserByIdRoute(userId)).foreach { maybeUser =>
+      maybeUser.map { user =>
+        user$.transform { u =>
+          u.copy(username = user.username, email = user.email, langs = user.langs)
+        }
+      }
     }
   }
 
@@ -64,7 +69,7 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   }
 
   // we return a Function here!
-  private def updateUser(f: (User, String) => User): (dom.KeyboardEvent => Unit) =
+  private def updateUser(f: (UserModel, String) => UserModel): (dom.KeyboardEvent => Unit) =
     e => {
       val newValue = e.target.asInstanceOf[dom.html.Input].value
       user$.transform(u => f(u, newValue))
@@ -84,9 +89,9 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   private def submitForm(e: dom.Event): Unit = {
     e.preventDefault()
 
-    val user = user$.now
-    val userReq = CreateOrUpdateUserRequest(user.username, user.email, user.langs)
-
+    // could've user automapper here.. https://github.com/bfil/scala-automapper
+    val userModel = user$.now
+    val userReq = CreateOrUpdateUserReq(userModel.username, userModel.email, userModel.langs)
     val futureRes = maybeUserId match {
       case Some(userId) => UserService.update(UserByIdRoute(userId), userReq)
       case None         => UserService.create(userReq)
@@ -96,4 +101,8 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
       appRouter.router.navigateTo("/")
     }
   }
+}
+
+object UserComponent {
+  case class UserModel(username: String, email: String, langs: Seq[ProgLang.ProgLang] = Seq.empty)
 }

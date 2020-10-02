@@ -5,8 +5,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalajs.dom.ext.Ajax
 import play.api.libs.json.Json
 import ba.sake.shared.api.routes._
-import ba.sake.shared.api.models.user.User
-import ba.sake.shared.api.models.user.CreateOrUpdateUserRequest
+import ba.sake.shared.api.models.user._
 
 object UserService {
 
@@ -26,7 +25,7 @@ object UserService {
     }
   }
 
-  def create(createUserReq: CreateOrUpdateUserRequest): Future[User] = {
+  def create(createUserReq: CreateOrUpdateUserReq): Future[User] = {
     val url = UsersRoute().urlData.url
     val reqJson = Json.stringify(Json.toJson(createUserReq))
     val headers = Map("Content-Type" -> "application/json")
@@ -36,7 +35,7 @@ object UserService {
     }
   }
 
-  def update(route: UserByIdRoute, updateUserReq: CreateOrUpdateUserRequest): Future[User] = {
+  def update(route: UserByIdRoute, updateUserReq: CreateOrUpdateUserReq): Future[User] = {
     val url = route.urlData.url
     val reqJson = Json.stringify(Json.toJson(updateUserReq))
     val headers = Map("Content-Type" -> "application/json")

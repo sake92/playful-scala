@@ -31,12 +31,12 @@ class UserController(
         Ok(Json.toJson(userService.findAll()))
       }
 
-    case POST -> UsersRoute() => Action(validateJson[CreateOrUpdateUserRequest]) { req =>
+    case POST -> UsersRoute() => Action(validateJson[CreateOrUpdateUserReq]) { req =>
         val newUser = userService.create(req.body)
         Ok(Json.toJson(newUser))
       }
 
-    case PUT -> UserByIdRoute(userId) => Action(validateJson[CreateOrUpdateUserRequest]) { req =>
+    case PUT -> UserByIdRoute(userId) => Action(validateJson[CreateOrUpdateUserReq]) { req =>
         val updatedUser = userService.update(userId, req.body)
         Ok(Json.toJson(updatedUser))
       }
