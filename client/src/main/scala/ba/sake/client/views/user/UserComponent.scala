@@ -5,6 +5,7 @@ import org.scalajs.dom
 import rescala.default._
 import rescala.extra.Tags._
 import scalatags.JsDom.all._
+import io.scalaland.chimney.dsl._
 import ba.sake.scalajs_router.Component
 import ba.sake.shared.api.models.user._
 import ba.sake.shared.api.routes.UserByIdRoute
@@ -23,9 +24,7 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   maybeUserId.foreach { userId =>
     UserService.getUser(UserByIdRoute(userId)).foreach { maybeUser =>
       maybeUser.map { user =>
-        user$.transform { u =>
-          u.copy(username = user.username, email = user.email, langs = user.langs)
-        }
+        user$.set(user.transformInto[UserModel])
       }
     }
   }
@@ -89,9 +88,8 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   private def submitForm(e: dom.Event): Unit = {
     e.preventDefault()
 
-    // could've user automapper here.. https://github.com/bfil/scala-automapper
     val userModel = user$.now
-    val userReq = CreateOrUpdateUserReq(userModel.username, userModel.email, userModel.langs)
+    val userReq = userModel.transformInto[CreateOrUpdateUserReq]
     val futureRes = maybeUserId match {
       case Some(userId) => UserService.update(UserByIdRoute(userId), userReq)
       case None         => UserService.create(userReq)
