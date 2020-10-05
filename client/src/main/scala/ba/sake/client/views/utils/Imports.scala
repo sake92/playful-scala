@@ -5,7 +5,7 @@ import ba.sake.hepek.bootstrap3.component.BootstrapFormComponents
 
 object Imports {
 
-  val Bundle = {
+  val Bundle = locally {
     val bundle = BootstrapBundle()
     val newForm = bundle.Form.withFormType(BootstrapFormComponents.Type.Horizontal())
     bundle.withForm(newForm)

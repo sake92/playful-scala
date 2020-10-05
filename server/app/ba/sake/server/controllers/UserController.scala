@@ -5,8 +5,6 @@ import play.api.mvc.Results._
 import play.api.mvc.DefaultActionBuilder
 import play.api.mvc.PlayBodyParsers
 import play.api.libs.json.Json
-import play.api.libs.json.JsError
-import ba.sake.server.routing.PlayfulRouter
 import ba.sake.shared.api.routes._
 import ba.sake.shared.api.models.user._
 import ba.sake.server.services.UserService

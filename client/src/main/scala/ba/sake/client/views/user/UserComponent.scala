@@ -88,14 +88,13 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   private def submitForm(e: dom.Event): Unit = {
     e.preventDefault()
 
-    val userModel = user$.now
-    val userReq = userModel.transformInto[CreateOrUpdateUserReq]
+    val userReq = user$.now.transformInto[CreateOrUpdateUserReq]
     val futureRes = maybeUserId match {
       case Some(userId) => UserService.update(UserByIdRoute(userId), userReq)
       case None         => UserService.create(userReq)
     }
 
-    futureRes.map { user =>
+    futureRes.foreach { user =>
       appRouter.router.navigateTo("/")
     }
   }
