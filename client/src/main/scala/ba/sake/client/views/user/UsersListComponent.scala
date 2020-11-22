@@ -2,18 +2,17 @@ package ba.sake.client.views.user
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalajs.dom
-import rescala.default._
-import rescala.extra.Tags._
 import scalatags.JsDom.all._
+import ba.sake.rxtags._
 import ba.sake.scalajs_router.Component
+import ba.sake.scalajs_router.Router
 import ba.sake.shared.api.models.user.User
-import ba.sake.shared.client.routes._
-import ba.sake.client.AppRouter
-import ba.sake.client.services.UserService
-import ba.sake.client.views.utils.Imports.Bundle._, Classes._
 import ba.sake.shared.api.routes.UserByIdRoute
+import ba.sake.shared.client.routes._
+import ba.sake.client.services.UserService
+import ba.sake.client.views.utils.Imports._, Bundle._, Classes._
 
-case class UsersListComponent(appRouter: AppRouter) extends Component {
+case class UsersListComponent(router: Router) extends Component {
 
   private val users$ = Var(Vector.empty[User])
 
@@ -38,7 +37,7 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
                 td(
                   button(
                     btnClass,
-                    onclick := { (e: dom.MouseEvent) => appRouter.navigateTo(UserEditRoute(user.id)) }
+                    onclick := { (e: dom.MouseEvent) => router.navigateTo(UserEditRoute(user.id)) }
                   )("Edit"),
                   button(
                     btnClass,
@@ -48,19 +47,19 @@ case class UsersListComponent(appRouter: AppRouter) extends Component {
                 )
               )
             }
-          }.asModifierL
+          }.asFrag
         )
       ),
       button(
         btnClass,
         btnPrimary,
-        onclick := { (e: dom.MouseEvent) => appRouter.navigateTo(UserCreateRoute()) }
+        onclick := { (e: dom.MouseEvent) => router.navigateTo(UserCreateRoute()) }
       )("Create")
     ).render
 
   private def deleteUser(user: User) = {
     UserService.delete(UserByIdRoute(user.id)).map { _ =>
-      users$.transform(_.filterNot(_ == user))
+      users$.set(_.filterNot(_ == user))
     }
   }
 }

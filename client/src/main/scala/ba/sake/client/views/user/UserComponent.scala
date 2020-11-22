@@ -2,19 +2,18 @@ package ba.sake.client.views.user
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalajs.dom
-import rescala.default._
-import rescala.extra.Tags._
+import ba.sake.rxtags._
 import scalatags.JsDom.all._
 import io.scalaland.chimney.dsl._
 import ba.sake.scalajs_router.Component
+import ba.sake.scalajs_router.Router
 import ba.sake.shared.api.models.user._
 import ba.sake.shared.api.routes.UserByIdRoute
-import ba.sake.client.AppRouter
 import ba.sake.client.services.UserService
 import ba.sake.client.views.utils._
 import Imports.Bundle._, Classes._
 
-case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extends Component {
+case class UserComponent(router: Router, maybeUserId: Option[Long]) extends Component {
   import UserComponent.UserModel
 
   private val user$ = Var(UserModel("", ""))
@@ -71,13 +70,13 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
   private def updateUser(f: (UserModel, String) => UserModel): (dom.KeyboardEvent => Unit) =
     e => {
       val newValue = e.target.asInstanceOf[dom.html.Input].value
-      user$.transform(u => f(u, newValue))
+      user$.set(u => f(u, newValue))
     }
 
   private def updateUserLang(pl: ProgLang.ProgLang): (dom.Event => Unit) =
     e => {
       val isChecked = e.target.asInstanceOf[dom.html.Input].checked
-      user$.transform { u =>
+      user$.set { u =>
         val newLangs =
           if (isChecked) u.langs.appended(pl)
           else u.langs.filterNot(_ == pl)
@@ -94,8 +93,8 @@ case class UserComponent(appRouter: AppRouter, maybeUserId: Option[Long]) extend
       case None         => UserService.create(userReq)
     }
 
-    futureRes.foreach { user =>
-      appRouter.router.navigateTo("/")
+    futureRes.foreach { _ =>
+      router.navigateTo("/")
     }
   }
 }
