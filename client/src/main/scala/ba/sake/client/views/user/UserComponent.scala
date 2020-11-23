@@ -34,7 +34,7 @@ case class UserComponent(router: Router, maybeUserId: Option[Long]) extends Comp
       h3(s"$actionName User:"),
       br,
       div(
-        form(onsubmit := (submitForm _))(
+        form(onsubmit := submitForm())(
           inputText(
             value := user$.map(_.username),
             onkeyup := updateUser((user, v) => user.copy(username = v))
@@ -84,19 +84,20 @@ case class UserComponent(router: Router, maybeUserId: Option[Long]) extends Comp
       }
     }
 
-  private def submitForm(e: dom.Event): Unit = {
-    e.preventDefault()
+  private def submitForm(): (dom.Event => Unit) =
+    e => {
+      e.preventDefault()
 
-    val userReq = user$.now.transformInto[CreateOrUpdateUserReq]
-    val futureRes = maybeUserId match {
-      case Some(userId) => UserService.update(UserByIdRoute(userId), userReq)
-      case None         => UserService.create(userReq)
-    }
+      val userReq = user$.now.transformInto[CreateOrUpdateUserReq]
+      val futureRes = maybeUserId match {
+        case Some(userId) => UserService.update(UserByIdRoute(userId), userReq)
+        case None         => UserService.create(userReq)
+      }
 
-    futureRes.foreach { _ =>
-      router.navigateTo("/")
+      futureRes.foreach { _ =>
+        router.navigateTo("/")
+      }
     }
-  }
 }
 
 object UserComponent {
