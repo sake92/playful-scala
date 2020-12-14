@@ -9,18 +9,17 @@ object Main extends App {
 
   var router = Router()
 
-  val mainComponent = MainComponent(router)
   val routes: Router.Routes = {
-    case "/"                   => mainComponent
+
     case UserEditRoute(userId) => UserComponent(router, Some(userId))
     case UserCreateRoute()     => UserComponent(router, None)
     case UsersRoute()          => UsersListComponent(router)
+    case _                     => MainComponent(router)
   }
 
   router = router.withRoutesData(
     mountId = "main",
-    routes = routes,
-    notFoundComponent = mainComponent
+    routes = routes
   )
 
   router.init()

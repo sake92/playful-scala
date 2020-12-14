@@ -7,7 +7,7 @@ inThisBuild(
   )
 )
 
-val hepekVersion = "0.8.3+2-f01036cc-SNAPSHOT"
+val hepekVersion = "0.8.8"
 
 lazy val server = (project in file("server"))
   .settings(
@@ -24,8 +24,8 @@ lazy val client = (project in file("client"))
   .settings(
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Seq(
-      "ba.sake" %%% "rxtags" % "0.0.1",
-      "ba.sake" %%% "scalajs-router" % "0.0.7",
+      "ba.sake" %%% "rxtags" % "0.0.6",
+      "ba.sake" %%% "scalajs-router" % "0.0.9",
       "ba.sake" %%% "hepek-components" % hepekVersion
     ),
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv()

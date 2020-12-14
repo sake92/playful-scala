@@ -28,26 +28,25 @@ case class UsersListComponent(router: Router) extends Component {
           tr(th("Username"), th("Email"), th("Languages"), th())
         ),
         tbody(
-          users$.map { users =>
-            users.map { user =>
-              tr(
-                td(user.username),
-                td(user.email),
-                td(user.langs.mkString(", ")),
-                td(
-                  button(
-                    btnClass,
-                    onclick := { (e: dom.MouseEvent) => router.navigateTo(UserEditRoute(user.id)) }
-                  )("Edit"),
-                  button(
-                    btnClass,
-                    btnDanger,
-                    onclick := { (e: dom.MouseEvent) => deleteUser(user) }
-                  )("Delete")
-                )
+          users$.map2 { user =>
+            tr(
+              td(user.username),
+              td(user.email),
+              td(user.langs.mkString(", ")),
+              td(
+                button(
+                  btnClass,
+                  onclick := { (e: dom.MouseEvent) => router.navigateTo(UserEditRoute(user.id)) }
+                )("Edit"),
+                button(
+                  btnClass,
+                  btnDanger,
+                  onclick := { (e: dom.MouseEvent) => deleteUser(user) }
+                )("Delete")
               )
-            }
-          }.asFrag
+            )
+
+          }
         )
       ),
       button(
